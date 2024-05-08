@@ -25,7 +25,7 @@
     if (isset($_GET['ssn'])) {
         $ssn = $_GET['ssn'];
         
-        $sql_query_a = "SELECT c.Title, s.Classroom, s.MeetingDays, s.BeginningTime, s.EndingTime 
+        $sql_query_a = "SELECT p.Name AS ProfessorName, c.Title, s.Classroom, s.MeetingDays, s.BeginningTime, s.EndingTime 
                         FROM Professor p
                         JOIN Section s ON p.SSN = s.ProfessorSSN
                         JOIN Course c ON s.CourseNumber = c.CourseNumber
@@ -33,8 +33,13 @@
         
         $result_a = $conn->query($sql_query_a);
         
+        $professorName = ""; // Variable to store the professor's name
+        
         if ($result_a->num_rows > 0) {
-            echo "<h3>Classes for Professor with SSN: $ssn</h3>";
+            $row = $result_a->fetch_assoc();
+            $professorName = $row['ProfessorName'];
+            
+            echo "<h3>Classes for Professor: $professorName</h3>";
             echo "<table>
                     <tr>
                         <th>Title</th>
@@ -43,6 +48,9 @@
                         <th>Beginning Time</th>
                         <th>Ending Time</th>
                     </tr>";
+            
+            $result_a->data_seek(0); // Reset the result pointer to the beginning
+            
             while ($row = $result_a->fetch_assoc()) {
                 echo "<tr>
                         <td>".$row['Title']."</td>
@@ -50,7 +58,7 @@
                         <td>".$row['MeetingDays']."</td>
                         <td>".$row['BeginningTime']."</td>
                         <td>".$row['EndingTime']."</td>
-                      </tr>";
+                    </tr>";
             }
             echo "</table>";
         } else {
