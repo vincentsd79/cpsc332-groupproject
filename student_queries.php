@@ -24,13 +24,13 @@
     // Query a: Given a course number, list the sections of the course, including the classrooms, the meeting days and time, and the number of students enrolled in each section
     if (isset($_GET['course_number'])) {
         $course_number = $_GET['course_number'];
-        
-        $sql_query_a = "SELECT s.SectionNumber, s.Classroom, s.MeetingDays, s.BeginningTime, s.EndingTime, COUNT(e.StudentID) AS enrolled_students
+
+        $sql_query_a = "SELECT s.SectionNumber,s.Classroom, s.MeetingDays, s.BeginningTime, s.EndingTime, COUNT(*) AS enrolled_students
                         FROM Section s
                         LEFT JOIN Enrollment e ON s.SectionID = e.SectionID
                         WHERE s.CourseNumber = '$course_number'
-                        GROUP BY s.SectionID";
-        
+                        GROUP BY s.SectionID";    
+
         $result_a = $conn->query($sql_query_a);
         
         if ($result_a->num_rows > 0) {
