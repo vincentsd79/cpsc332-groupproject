@@ -83,13 +83,13 @@
                         <th>Course Title</th>
                         <th>Grade</th>
                     </tr>";
-            while ($row = $result_b->fetch_assoc()) {
+            do {
                 echo "<tr>
                         <td>".$row['CourseNumber']."</td>
                         <td>".$row['Title']."</td>
                         <td>".$row['Grade']."</td>
                       </tr>";
-            }
+            } while ($row = $result_b->fetch_assoc());
             echo "</table>";
         } else {
             echo "No courses found for the given student ID.";
